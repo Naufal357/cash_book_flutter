@@ -44,36 +44,50 @@ class CashFlowDetailScreenState extends State<CashFlowDetailScreen> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: _cashFlowList.length,
-              itemBuilder: (context, index) {
-                final item = _cashFlowList[index];
-                final type = item['type'];
-                final amount = item['amount'];
-                final description = item['description'];
-                final date = DateTime.parse(item['date']);
-                final isIncome = type == 'Income';
+                itemCount: _cashFlowList.length,
+                itemBuilder: (context, index) {
+                  final item = _cashFlowList[index];
+                  final type = item['type'];
+                  final amount = item['amount'];
+                  final description = item['description'];
+                  final date = DateTime.parse(item['date']);
+                  const incomeType = 'Income';
 
-                return ListTile(
-                  title: Text(
-                    'Jumlah: Rp ${amount.toStringAsFixed(2)}',
-                    style: TextStyle(
-                      color: isIncome ? Colors.green : Colors.red,
-                      fontWeight: FontWeight.bold,
+                  Color textColor;
+                  IconData trailingIcon;
+                  Color trailingIconColor;
+
+                  if (type == incomeType) {
+                    textColor = Colors.green;
+                    trailingIcon = Icons.arrow_back;
+                    trailingIconColor = Colors.green;
+                  } else {
+                    textColor = Colors.red;
+                    trailingIcon = Icons.arrow_forward;
+                    trailingIconColor = Colors.red;
+                  }
+
+                  return ListTile(
+                    title: Text(
+                      'Jumlah: Rp ${amount.toStringAsFixed(2)}',
+                      style: TextStyle(
+                        color: textColor,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Tanggal: ${_formatDate(date)}'),
-                      Text('Keterangan: $description'),
-                    ],
-                  ),
-                  trailing: Icon(
-                    isIncome ? Icons.arrow_forward : Icons.arrow_back,
-                    color: isIncome ? Colors.green : Colors.red,
-                  ),
-                );
-              },
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Tanggal: ${_formatDate(date)}'),
+                        Text('Keterangan: $description'),
+                      ],
+                    ),
+                    trailing: Icon(
+                      trailingIcon,
+                      color: trailingIconColor,
+                    ),
+                  );
+                }
             ),
           ),
         ],
@@ -91,7 +105,7 @@ class CashFlowDetailScreenState extends State<CashFlowDetailScreen> {
               );
             },
             label: const Text('<< Kembali'),
-            backgroundColor: Colors.blue, // Ganti dengan warna yang sesuai
+            backgroundColor: Colors.blue,
           ),
         ),
       ),

@@ -29,7 +29,7 @@ class AddExpenseScreenState extends State<AddExpenseScreen> {
               style: TextStyle(
                 fontSize: 21.0,
                 fontWeight: FontWeight.bold,
-                color: Colors.red, // Warna sesuai keinginan Anda
+                color: Colors.red,
               ),
             ),
             DatePickerComponent(
@@ -74,17 +74,13 @@ class AddExpenseScreenState extends State<AddExpenseScreen> {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    // Mengambil nilai dari inputan
                     DateTime date = selectedDate;
                     double amount = double.parse(nominalController.text);
                     String description = keteranganController.text;
 
-                    // Memanggil fungsi untuk menyimpan pengeluaran ke database
                     int result = await DatabaseHelper().insertExpense(date, amount, description);
 
-                    // Memeriksa apakah data berhasil disimpan
                     if (result != -1) {
-                      // Data berhasil disimpan, tampilkan Snackbar "Tersimpan" dan kembali ke halaman "Beranda"
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('Data pengeluaran berhasil disimpan.'),
@@ -95,7 +91,6 @@ class AddExpenseScreenState extends State<AddExpenseScreen> {
                         MaterialPageRoute(builder: (context) => const HomeScreen()),
                       );
                     } else {
-                      // Terjadi kesalahan saat menyimpan data, tampilkan Snackbar "Gagal"
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('Gagal menyimpan data pengeluaran.'),

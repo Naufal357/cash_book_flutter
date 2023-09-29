@@ -3,6 +3,7 @@ import 'package:cash_book_naufal/components/home_nav_btn.dart';
 import 'package:cash_book_naufal/screens/add_income_screen.dart';
 import 'package:cash_book_naufal/screens/add_expense_screen.dart';
 import 'package:cash_book_naufal/screens/cash_flow_detail_screen.dart';
+import 'package:cash_book_naufal/screens/settings_screen.dart';
 import 'package:cash_book_naufal/database/database_helper.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  DatabaseHelper databaseHelper = DatabaseHelper(); // Inisialisasi DatabaseHelper
+  DatabaseHelper databaseHelper = DatabaseHelper();
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +34,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               const SizedBox(height: 20.0),
-              // Total Pengeluaran
               FutureBuilder<double>(
-                future: databaseHelper.getTotalExpense(), // Ambil total pengeluaran dari database
+                future: databaseHelper.getTotalExpense(),
                 builder: (context, snapshot) {
                   double totalExpense = snapshot.data ?? 0.0;
                   return Row(
@@ -60,10 +60,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 },
               ),
-              const SizedBox(height: 10.0), // Jarak antara Total Pengeluaran dan Total Pemasukan
+              const SizedBox(height: 10.0),
               // Total Pemasukan
               FutureBuilder<double>(
-                future: databaseHelper.getTotalIncome(), // Ambil total pemasukan dari database
+                future: databaseHelper.getTotalIncome(),
                 builder: (context, snapshot) {
                   double totalIncome = snapshot.data ?? 0.0;
                   return Row(
@@ -89,7 +89,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               const SizedBox(height: 20.0),
-              // Tombol "Buat Pemasukan" dan "Buat Pengeluaran" dalam dua kolom
               GridView.count(
                 crossAxisCount: 2,
                 crossAxisSpacing: 20.0,
@@ -108,7 +107,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     },
                   ),
-                  // Menggunakan HomeNavigationButton untuk tombol "Buat Pengeluaran"
                   HomeNavigationButton(
                     label: 'Buat Pengeluaran',
                     icon: Icons.remove_circle_outline,
@@ -148,7 +146,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     iconColor: Colors.white,
                     buttonColor: Colors.blue,
                     onPressed: () {
-                      // Tambahkan logika untuk mengarahkan ke halaman "Pengaturan"
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                      );
                     },
                   ),
                 ],

@@ -28,11 +28,11 @@ class HomeNavigationButton extends StatelessWidget {
         children: [
           Icon(
             icon,
-            size: 48.0, // Ukuran icon
+            size: 48.0,
             color: iconColor,
           ),
           const SizedBox(height: 8.0),
-          Text(label), // Keterangan tombol
+          Text(label),
         ],
       ),
     );

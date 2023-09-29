@@ -13,9 +13,6 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Aplikasi Keuangan'),
-      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -27,17 +24,17 @@ class LoginScreen extends StatelessWidget {
                 height: 120.0,
                 decoration: const BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.blue, // Ganti warna sesuai desain Anda
+                  color: Colors.blue,
                 ),
                 child: const Icon(
-                  Icons.account_balance_wallet, // Ganti ikon sesuai desain Anda
+                  Icons.account_balance_wallet,
                   size: 80.0,
                   color: Colors.white,
                 ),
               ),
               const SizedBox(height: 20.0),
               const Text(
-                'Aplikasi Keuangan', // Ganti dengan nama aplikasi Anda
+                'Aplikasi Keuangan',
                 style: TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
@@ -45,7 +42,7 @@ class LoginScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20.0),
               TextField(
-                controller: usernameController, // Tambahkan controller di sini
+                controller: usernameController,
                 decoration: const InputDecoration(
                   labelText: 'Username',
                   hintText: 'Masukkan username',
@@ -53,7 +50,7 @@ class LoginScreen extends StatelessWidget {
               ),
               const SizedBox(height: 10.0),
               TextField(
-                controller: passwordController, // Tambahkan controller di sini
+                controller: passwordController,
                 decoration: const InputDecoration(
                   labelText: 'Password',
                   hintText: 'Masukkan password',
@@ -68,13 +65,11 @@ class LoginScreen extends StatelessWidget {
                   bool isLoggedIn = await db.checkLogin(username, password);
 
                   if (isLoggedIn) {
-                    // Jika berhasil login, buka halaman "HomeScreen"
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => const HomeScreen()),
                     );
                   } else {
-                    // Menampilkan pesan kesalahan jika login gagal
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Login gagal. Periksa username dan password Anda.'),

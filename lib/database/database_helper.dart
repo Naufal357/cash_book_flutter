@@ -30,7 +30,6 @@ class DatabaseHelper {
   }
 
   void _createTables(Database db, int newVersion) async {
-    // Tabel untuk pemasukan
     await db.execute('''
       CREATE TABLE Income (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -40,7 +39,6 @@ class DatabaseHelper {
       )
     ''');
 
-    // Tabel untuk pengeluaran
     await db.execute('''
       CREATE TABLE Expense (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -50,7 +48,6 @@ class DatabaseHelper {
       )
     ''');
 
-    // Tabel untuk menyimpan username dan password pengguna
     await db.execute('''
       CREATE TABLE User (
         id INTEGER PRIMARY KEY,
@@ -59,14 +56,12 @@ class DatabaseHelper {
       )
     ''');
 
-    // Menambahkan pengguna default
     await db.rawInsert('''
       INSERT INTO User (username, password)
       VALUES ("user", "user")
     ''');
   }
 
-  // Check Login
   Future<bool> checkLogin(String username, String password) async {
     final dbClient = await db;
     final result = await dbClient!.query(
@@ -102,7 +97,6 @@ class DatabaseHelper {
     );
   }
 
-// Fungsi untuk menghitung total pemasukan
   Future<double> getTotalIncome() async {
     final dbClient = await db;
     final result = await dbClient!.rawQuery('SELECT SUM(amount) as Total FROM Income');
@@ -113,12 +107,10 @@ class DatabaseHelper {
     return total;
   }
 
-// Fungsi untuk menghitung total pengeluaran
   Future<double> getTotalExpense() async {
     final dbClient = await db;
     final result = await dbClient!.rawQuery('SELECT SUM(amount) as Total FROM Expense');
 
-    // Mengambil nilai dari result['Total'] dan mengkonversi menjadi double
     double total = (result.isNotEmpty ? (result.first['Total'] ?? 0.0) : 0.0) as double;
 
     return total;
@@ -130,23 +122,45 @@ class DatabaseHelper {
     final expenseData = await dbClient.query('Expense', orderBy: 'date DESC');
     List<Map<String, dynamic>> cashFlowData = [];
 
-    // Menggabungkan data pemasukan dan pengeluaran menjadi satu list
-    cashFlowData.addAll(incomeData);
-    cashFlowData.addAll(expenseData);
+    for (var incomeTransaction in incomeData) {
+      cashFlowData.add({
+        ...incomeTransaction,
+        'type': 'Income',
+      });
+    }
+
+    for (var expenseTransaction in expenseData) {
+      cashFlowData.add({
+        ...expenseTransaction,
+        'type': 'Expense',
+      });
+    }
 
     return cashFlowData;
   }
 
-  // Fungsi untuk mengganti password pengguna
-  Future<int> changePassword(String newPassword) async {
+  Future<bool> checkCurrentPassword(String currentPassword) async {
     final dbClient = await db;
-    return await dbClient!.update(
-      'User',
+    final List<Map<String, dynamic>> results = await dbClient!.query(
+      'user',
+      where: 'password = ?',
+      whereArgs: [currentPassword],
+    );
+
+    return results.isNotEmpty;
+  }
+
+  Future<void> updatePassword(String newPassword) async {
+    final dbClient = await db;
+    await dbClient!.update(
+      'user',
       {'password': newPassword},
-      where: 'id = ?',
-      whereArgs: [1], // ID pengguna default
+      where: 'username = ?',
+      whereArgs: ['user'],
     );
   }
+
+
 }
 
 

@@ -30,7 +30,7 @@ class AddIncomeScreenState extends State<AddIncomeScreen> {
               style: TextStyle(
                 fontSize: 21.0,
                 fontWeight: FontWeight.bold,
-                color: Colors.red, // Warna sesuai keinginan Anda
+                color: Colors.red,
               ),
             ),
             DatePickerComponent(
@@ -47,7 +47,7 @@ class AddIncomeScreenState extends State<AddIncomeScreen> {
                 hintText: "",
               ),
               keyboardType: TextInputType.number,
-              controller: nominalController, // Tambahkan controller untuk input nominal
+              controller: nominalController,
             ),
 
             TextField(
@@ -55,7 +55,7 @@ class AddIncomeScreenState extends State<AddIncomeScreen> {
                 labelText: "Keterangan",
                 hintText: "",
               ),
-              controller: keteranganController, // Tambahkan controller untuk input keterangan
+              controller: keteranganController,
             ),
 
             const SizedBox(height: 20.0),
@@ -71,10 +71,10 @@ class AddIncomeScreenState extends State<AddIncomeScreen> {
                     });
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.yellow, // Warna latar belakang untuk tombol reset (kuning)
-                    minimumSize: const Size(double.infinity, 30), // Tombol memenuhi lebar layar
+                    backgroundColor: Colors.yellow,
+                    minimumSize: const Size(double.infinity, 30),
                   ),
-                  child: const Text("Reset", style: TextStyle(color: Colors.black)), // Warna teks hitam
+                  child: const Text("Reset", style: TextStyle(color: Colors.black)),
                 ),
                 ElevatedButton(
                   onPressed: () async {
@@ -83,12 +83,9 @@ class AddIncomeScreenState extends State<AddIncomeScreen> {
                     double amount = double.parse(nominalController.text);
                     String description = keteranganController.text;
 
-                    // Memanggil fungsi untuk menyimpan pemasukan ke database
                     int result = await DatabaseHelper().insertIncome(date, amount, description);
 
-                    // Memeriksa apakah data berhasil disimpan
                     if (result != -1) {
-                      // Data berhasil disimpan, tampilkan Snackbar "Tersimpan" dan kembali ke halaman "Beranda"
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('Data berhasil disimpan.'),
@@ -99,7 +96,6 @@ class AddIncomeScreenState extends State<AddIncomeScreen> {
                         MaterialPageRoute(builder: (context) => const HomeScreen()),
                       );
                     } else {
-                      // Terjadi kesalahan saat menyimpan data, tampilkan Snackbar "Gagal"
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('Gagal menyimpan data.'),
@@ -121,8 +117,8 @@ class AddIncomeScreenState extends State<AddIncomeScreen> {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue, // Warna latar belakang untuk tombol kembali (biru)
-                    minimumSize: const Size(double.infinity, 30), // Tombol memenuhi lebar layar
+                    backgroundColor: Colors.blue,
+                    minimumSize: const Size(double.infinity, 30),
                   ),
                   child: const Text("<<< Kembali", style: TextStyle(color: Colors.black)),
                 ),
